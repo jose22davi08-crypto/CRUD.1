@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cadastro de Carros</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 30px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .botao {
+            display: inline-block;
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .editar {
+            background: #ffc107;
+            color: black;
+        }
+
+        .excluir {
+            background: #dc3545;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        form {
+            display: inline;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Cadastro de Carros</h1>
+
+<p>Gerencie os carros cadastrados no sistema.</p>
+
+<a th:href="@{/carros/novo}" class="botao">
+    Cadastrar Novo Carro
+</a>
+
+<table>
+
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Modelo</th>
+        <th>Marca</th>
+        <th>Ano</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <tr th:each="carro : ${carros}">
+
+        <td th:text="${carro.get('id')}"></td>
+
+        <td th:text="${carro.get('modelo')}"></td>
+
+        <td th:text="${carro.get('marca')}"></td>
+
+        <td th:text="${carro.get('ano')}"></td>
+
+        <td>
+
+            <a th:href="@{/carros/editar/{id}(id=${carro.get('id')})}"
+               class="botao editar">
+                Editar
+            </a>
+
+            <form th:action="@{/carros/excluir/{id}(id=${carro.get('id')})}"
+                  method="post"
+                  onsubmit="return confirm('Deseja excluir este carro?');">
+
+                <button type="submit" class="botao excluir">
+                    Excluir
+                </button>
+
+            </form>
+
+        </td>
+
+    </tr>
+
+    <tr th:if="${#lists.isEmpty(carros)}">
+        <td colspan="5">
+            Nenhum carro cadastrado.
+        </td>
+    </tr>
+
+    </tbody>
+
+</table>
+
+</body>
+</html>

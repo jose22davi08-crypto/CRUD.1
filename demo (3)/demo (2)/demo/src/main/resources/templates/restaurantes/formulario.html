@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Formulário de Restaurante</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 30px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        button, .voltar {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+        }
+
+        .voltar {
+            background: #6c757d;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1 th:text="${restaurante != null ? 'Editar Restaurante' : 'Cadastrar Restaurante'}">
+        Cadastrar Restaurante
+    </h1>
+
+    <!-- CADASTRO -->
+    <form th:if="${restaurante == null}"
+          th:action="@{/restaurantes/salvar}"
+          method="post">
+
+        <label>Nome:</label>
+        <input type="text"
+               name="nome"
+               placeholder="Nome do restaurante"
+               required
+               maxlength="100">
+
+        <label>Tipo de comida:</label>
+        <input type="text"
+               name="tipo_comida"
+               placeholder="Ex: Pizza, Hambúrguer, Japonesa"
+               required
+               maxlength="100">
+
+        <label>Endereço:</label>
+        <input type="text"
+               name="endereco"
+               placeholder="Endereço do restaurante"
+               required
+               maxlength="150">
+
+        <button type="submit">Cadastrar</button>
+
+        <a th:href="@{/restaurantes/index}" class="voltar">
+            Voltar
+        </a>
+
+    </form>
+
+    <!-- EDIÇÃO -->
+    <form th:if="${restaurante != null}"
+          th:action="@{/restaurantes/atualizar/{id}(id=${restaurante.get('id')})}"
+          method="post">
+
+        <label>Nome:</label>
+        <input type="text"
+               name="nome"
+               th:value="${restaurante.get('nome')}"
+               required
+               maxlength="100">
+
+        <label>Tipo de comida:</label>
+        <input type="text"
+               name="tipo_comida"
+               th:value="${restaurante.get('tipo_comida')}"
+               required
+               maxlength="100">
+
+        <label>Endereço:</label>
+        <input type="text"
+               name="endereco"
+               th:value="${restaurante.get('endereco')}"
+               required
+               maxlength="150">
+
+        <button type="submit">Salvar Alterações</button>
+
+        <a th:href="@{/restaurantes/index}" class="voltar">
+            Cancelar
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>
